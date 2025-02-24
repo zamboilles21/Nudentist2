@@ -1,0 +1,122 @@
+
+
+        <a href="#!/munkatarsak" class="btn bx bx-briefcase btn-primary" rel="noopener noreferrer">Vissza</a>
+        <div class="container-fluid">
+            <header class="dokprofhead">
+                
+                    
+              
+                <h1>{{doktor.nev}}</h1>
+                <img src="./Assets/HelperImages/{{doktor.kep}}.jpg" class="img-fluid  dokprofimage" alt="{{doktor.nev}}" title="{{doktor.nev}}" srcset="">
+                <div class="profil">
+                    <div class="dokProfileFav" ng-if="loggedUser&& loggedUser.jogok=='user'">
+                        
+                          <i class="bi bi-heart" id="heart"  ng-click="favourite(doktor.ID)"></i>
+        
+                          <span ng-if="loggedUser&& loggedUser.jogok=='user'" class="text nav-text" >Kedvencekhez adás</span>
+        
+                    </div>
+                    
+                    <img src={{doktor.image}}>
+                    <p ng-if="loggedUser&& loggedUser.jogok=='user'" class="dokProfileFav">
+                        <i class="bi bi-star star" id="star_1" ng-click="pointrate(1)"></i>
+                        <i class="bi bi-star star" id="star_2" ng-click="pointrate(2)"></i>
+                        <i class="bi bi-star star" id="star_3" ng-click="pointrate(3)"></i>
+                        <i class="bi bi-star star" id="star_4" ng-click="pointrate(4)"></i>
+                        <i class="bi bi-star star" id="star_5" ng-click="pointrate(5)"></i>
+                    </p>
+                    
+                </div>
+            </header>
+            <div>
+                <h2>Elérhetőségek</h2>
+                <p>Telefonszám:<a href="tel:{{doktor.telefonszam}}">{{doktor.telefonszam}}</a></p>
+                <p>Email-cím:<a href = "mailto: {{doktor.email}}"> {{doktor.email}}</a></p>
+            </div>
+            <div>
+                <div class="text"><h2>Bemutatkozás</h2></div>
+                <p> {{doktor.bemutatkozas}} </p>
+            </div>
+        
+        <div  ng-if="doktor.jogok==='doktor'">
+            <div class="text"><h2>Szakterület</h2></div>
+            <p> {{doktor.szakterulet}} </p>
+            <div class="text"><h2>Tanulmányok</h2></div>
+            <p> {{doktor.tanulmanyok}} </p>
+    
+        </div>
+        
+        <table class="table-responsive" ng-if="loggedUser&& loggedUser.jogok=='user'">
+
+            <tr>
+                <th>
+                    Üzenet írása:
+                </th>
+                <th>
+                    Szöveges értékelés:
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    <h3>Cím:</h3>
+                    <p> <input type="text" name="messageTitle" id="messageTitle" ng-model="comms.title"></p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <textarea name="" id="message_text" cols="30" rows="10" ng-model="comms.message_text"></textarea>
+                    <p>Maximum 500 karakter</p>
+                </td>
+                <td>
+                    <textarea name="" id="rating_text" cols="30" rows="10" ng-model="comms.rating_text"></textarea>
+                    <p>Maximum 500 karakter</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button type="submit" ng-click="message()" class="btn btn-primary">Üzenet küldése</button>
+                </td>
+                <td>
+                    <button type="submit" ng-click="rate()"class="btn btn-primary">Értékelés</button>
+                </td>
+            </tr>
+            
+        </table>
+
+        <table class="table-responsive rating_table"  ng-if="wasRated==true">
+            <thead>
+                <tr>
+                    <th>
+                        <p>Felhasználó</p>
+                    </th>
+                    <th>
+                        <p>Szöveges értékelés</p>
+                    </th>
+                    <th>
+                        <p>Csillagos értékelés</p>
+                    </th>
+                </tr>
+            </thead>
+        
+            <div>
+                <h2  ng-if="wasRated==true">Értékelések:</h2>
+                <tbody>
+                    <tr ng-repeat="ertekeles in sajatErtekeles"  ng-if="doktor.ID==ertekeles.orvosID">
+                        <td ng-repeat="user in userek" ng-if="user.ID==ertekeles.paciensID">
+                            {{user.nev}}
+                        </td>
+                        <td>
+                            {{ertekeles.szoveges}}
+                        </td>
+                        <td>
+                            {{ertekeles.csillagok}}/5
+                        </td>
+                    </tr>
+                </tbody>
+            </div>
+            
+        </table>
+    </section>
+
+        
+  

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="hu" ng-app="NudentistApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ settings.appTitle }}</title>
+    <link rel="icon" type="image/x-icon" href="./Assets/HelperImages/favicon.ico">
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="./assets/css/swiper-bundle.min.css">
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./assets/css/aos.css">
+    <link rel="stylesheet" href="./assets/css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+</head>
+
+<body>
+
+     <button class="btn btn-primary menugomb" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions"><i class='bx bx-menu icon'></i></button>
+        
+           <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel"> <a href="#!/"><img src="./Assets/HelperImages/logo1.png" class="img-fluid w-25" alt="" srcset=""></a> Menü</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    
+  </div>
+        <div class="offcanvas-body">
+                <nav class="navbar">
+                    <div class="menu-bar">
+                        <img class="rounded-circle mt-4 w-25 m-auto"  src="./uploads/{{loggedUser.kep}}.jpg">
+                        <div class="menu">
+                            <form role="search" ng-controller="userCtrl" ng-if="!loggedUser">
+
+                            <input type="email" class="form-control mb-3" id="floatingInput" placeholder="E-mail cím" ng-model="user.email">
+
+                            <input type="password" class="form-control mb-3" id="floatingPassword" placeholder="Jelszó" ng-model="user.pass1">
+
+                            <button class="btn btn-primary mb-3" ng-click="login()">Belépés</button>
+                            <a href="#!/reg" class="btn btn-danger mb-3">Regisztráció</a>
+                        </form>
+                        <form class="" role="search" ng-controller="userCtrl" ng-if="loggedUser">
+                            
+                            <input type="text" class="form-control mb-3" id="floatingInput" ng-model="loggedUser.nev" disabled>
+                            
+                            <button class="btn btn-secondary mb-3" ng-click="logout()">Kilépés</button>
+
+                        </form>
+                            <ul class="menu-links">
+                            
+                                <li class="nav-link">
+                                    <a href="#!/">
+                                        <i class='bx bx-home-alt icon' ></i>
+                                        <span class="text nav-text">Főoldal</span>
+                                    </a>
+                                </li>
+            
+                                <li class="nav-link">
+                                    <a href="#!/munkatarsak">
+                                        <i class='bx bx-user-plus icon' ></i>
+                                        <span class="text nav-text">Munkatársak</span>
+                                    </a>
+                                </li>
+            
+                                <li class="nav-link">
+                                    <a href="#!/kezelesek">
+                                        <i class="bi bi-hospital icon"></i>
+                                        <span class="text nav-text">Kezelések</span>
+                                    </a>
+                                </li>
+                                <li class="nav-link">
+                                    <a href="#!/elerhetoseg">
+                                        <i class='bx bx-phone-call icon' ></i>
+                                        <span class="text nav-text">Elérhetőségek</span>
+                                    </a>
+                                </li>
+            
+                                <li class="nav-link">
+                                    <a href="#!/bemutatkozas">
+                                        <i class='bx bx-pencil icon' ></i>
+                                        <span class="text nav-text">Bemutatkozás</span>
+                                    </a>
+                                </li>
+                               
+                                
+                                     <!-- admin functions -->
+                                <li class="nav-link" ng-if="loggedUser && (loggedUser.jogok==='doktor')">
+                                    <i class='bx bx-calendar icon' ></i>
+                                    <a class="nav-link text nav-text" href="#!/idopontokkezelese">Időpontok</a>
+
+                                </li>
+                                <!-- user functions -->
+                                <li class="nav-link"ng-if="loggedUser && (loggedUser.jogok==='user')">
+                                    <i class='bx bx-calendar icon' ></i>
+                                    <a class="nav-link text nav-text" href="#!/idopontokkezelese">Időpontok</a>
+                                </li>
+
+                                <li class="nav-item" ng-if="loggedUser && ((loggedUser.jogok==='user')||loggedUser.jogok==='doktor')">
+
+                                    <i class='bx bx-user-voice icon' ></i>
+                                    <a class="nav-link text nav-text" href="#!/profilom">Profilom</a>
+                                </li> 
+                                   
+                            </ul>
+                        </div>
+                        
+                           
+                        
+                        
+                    </div>
+                </div>
+            </nav>
+      </div>
+                          
+                        
+
+            
+        
+        <main>
+            
+            <div class="container-fluid shadow-lg p-4 mb-5 bg-body-tertiary rounded" ng-view>
+                tartalom
+            </div>
+        </main>
+        
+        
+
+        
+
+    </div>
+    
+    <script src="./assets/js/bootstrap.min.js"></script>
+    <script src="./assets/js/swiper-bundle.min.js"></script>
+    <script src="./assets/js/script.js"></script>
+    <script src="./assets/js/jquery.min.js"></script>
+    <script src="./assets/js/angular.min.js"></script>
+    <script src="./assets/js/angular-route.min.js"></script>
+    <script src="./assets/js/aos.js"></script>
+    <script src="./assets/js/sha1.js"></script>
+    <script src="./assets/js/moment.min.js"></script>
+    <script src="./assets/js/app.js"></script>
+    <script src="./assets/js/dbFactory.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    
+    <!-- controllers -->
+    <script src="./controllers/kezelesCtrl.js"></script>
+    <script src="./controllers/userCtrl.js"></script>
+    <script src="./controllers/uzenetCtrl.js"></script>
+    <script src="./controllers/profilokCtrl.js"></script>
+    <script src="./controllers/kezelesekCtrl.js"></script>
+    <script src="./controllers/idopontokCtrl.js"></script>
+
+    <script src="./controllers/munkatarsakCtrl.js"></script>
+    <script src="./controllers/kedvencekCtrl.js"></script>
+
+    <footer>
+        {{ settings.company }} - {{ settings.author }} 
+    </footer>
+</body>
+
+</html>

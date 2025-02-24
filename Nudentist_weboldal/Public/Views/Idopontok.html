@@ -1,0 +1,186 @@
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="./Assets/css/Idopontok.css">
+  <title>Időpontok</title>
+</head>
+<h1>Időpontok</h1>
+    <div class="table-responsive tablewidth">
+        <table class="table">
+            <thead>
+              <tr>
+                <th>Hétfő</th>
+                <th>Kedd</th>
+                <th>Szerda</th>
+                <th>Csütörtök</th>
+                <th>Péntek</th>
+              </tr>
+            </thead>
+            <tbody>
+                
+              <tr>
+                <td>
+                    
+                     8-16 óra
+                </td>
+                <td>
+                    8-16 óra
+                </td>
+                <td>
+                    10-16 óra
+                </td>
+                <td>
+                    14-20 óra
+                </td>
+                <td>
+                    9-15 óra
+                </td>
+            </tr>
+            
+            </tbody>
+          </table>
+      </div>
+    <div class="form-floating col-lg-3 mb-3 doktorselect" ng-if="loggedUser && (loggedUser.jogok==='user')">
+
+        <div class="form-floating  mb-3 selecter">
+          
+          <select class="form-select" id="orvos" ng-model="idopont.orvosid">
+            <option selected>Válassz...</option>
+            <option value="{{ Munkatars.ID }}"  ng-repeat="Munkatars in Munkatarsak" ng-if="Munkatars.jogok=='doktor'">{{Munkatars.nev}}</option>
+          </select>
+          <label for="orvos">Orvos</label>
+        </div>
+        <div class="form-floating mb-3 foglalas">
+          <div ng-if="loggedUser && (loggedUser.jogok==='user')">
+          
+        <div class="form-floating mb-3">
+            <input type="date" class="form-control" id="floatingDatum" placeholder="Dátum" ng-model="idopont.datum" min="{{dates.minDate}}" max="{{dates.maxDate}}" itemid="datum" ng-click="setmin()">
+            <label for="floatingDatum">Dátum</label>
+        </div>
+        
+        <div class="form-floating mb-3">
+
+            <input type="time" class="form-control" id="floatingTime" placeholder="Időpont" ng-model="idopont.idopont" min="times.minDate" max="20:00" step="00:30">
+
+            <label for="floatingTime">Időpont</label>
+        </div>
+        <p class="mb-3 text-muted">Az Időpontnak 8 és 20 óra közöttinek kell lennie</p>
+    </div>
+      <button class="btn btn-primary mb-3" ng-click="foglalas()">Időpont véglegesítése</button>
+      </div>
+      </div>
+      
+            
+            
+          </div>
+          <section class="main-content">
+          <div class="container-fluid">
+          <div ng-if="loggedUser && (loggedUser.jogok==='doktor') ">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Páciens</th>
+                    <th>Status</th>
+                    <th>Időpont</th>
+                    <th>Telefonszám</th>
+                    <th>Orvos</th>
+                    
+                  </tr>
+                </thead>
+                <tbody ng-repeat="idopont in idopontok | orderBy:'+status'" class="shadow p-3 mb-5 bg-body-tertiary rounded">
+                  <tr ng-if="loggedUser.ID==idopont.orvosID && loggedUser.jogok=='doktor'">
+                    <td>
+                      <div class="user-info">
+                        <div class="user-info__basic">
+                          <h5 class="mb-0">{{idopont.nev}}</h5>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      
+                      <span ng-if="idopont.status=='Elutasítva'"class="btn btn-danger status" readonly>{{idopont.status}}</span>
+                      <span ng-if="idopont.status=='Elfogadásra vár'"class="btn btn-warning status" readonly>{{idopont.status}}</span>
+                      <span ng-if="idopont.status=='Elfogadva'"class="btn btn-success status" readonly>{{idopont.status}}</span>
+                    </td>
+                    <td>
+                      <h6 class="mb-0">{{idopont.datum | date:'yyyy/MM/dd'}}</h6>
+                      <small>{{idopont.idopont}}</small>
+                    </td>
+                    <td>
+                      <h6 class="mb-0">{{idopont.telefonszam}}</h6>
+                      <a href="tel:{{idopont.telefonszam}}"><small>Hívás</small></a>
+                    </td>
+                    
+                      <td>
+                        <div ng-repeat="Munkatars in Munkatarsak">
+                        <h6 class="mb-0" ng-if="Munkatars.ID==idopont.orvosID">{{Munkatars.nev}}</h6>
+                      </div>
+                      </td>
+                      <td >
+                        <div ng-if="idopont.status=='Elfogadásra vár'">
+                          <span class="bx bx-bible" ng-click="elfogad(idopont.ID)">Elfogadás</span>
+                          <span class="bx bxs-x-circle" ng-click="elutasit(idopont.ID)">Elutasítás</span>
+                        </div>
+                        
+                      </td>
+                    
+                  </tr>
+                  </tbody>
+                </table>
+            </div>
+              </div>
+                </div>
+                <div class="container-fluid main-content table-responsive" ng-if="loggedUser && (loggedUser.jogok==='user')">
+                  <table class="table">
+                    <tbody>
+                      <tr>
+                        <th>
+                          <p>Orvos</p> 
+                        </th>
+                        <th>
+                          <p>Dátum</p>
+                        </th>
+                        <th>
+                          <p>Időpont</p>
+                        </th>
+                        <th>
+                          <p>Elfogadási állapot</p>
+                        </th>
+                      </tr>
+
+                      <tr  ng-repeat="idopont in sajatIdopontok | orderBy:'+status'">
+
+                        <td ng-repeat="munkatars in Munkatarsak" ng-if="munkatars.ID==idopont.orvosID">
+                          {{munkatars.nev}}
+                        </td>
+                        <td>
+                          <p>{{idopont.datum | date:'yyyy/MM/dd'}}</p>
+                        </td>
+                        <td>
+                          <p>{{idopont.idopont}}</p>
+                        </td>
+                        <td>
+                          <p ng-if="idopont.status=='Elutasítva'" class="bg-danger text-white">{{idopont.status}}</p>
+                          <p ng-if="idopont.status=='Elfogadásra vár'" class="bg-warning text-dark">{{idopont.status}}</p>
+                          <p ng-if="idopont.status=='Elfogadva'" class="bg-success text-white">{{idopont.status}}</p>
+                        </td>
+                        <td>
+                        <p ng-if="idopont.status=='Elutasítva'">
+                          <i class="bi bi-trash-fill delete-trash" ng-click="removeApp(idopont.ID)" title="Törlés"></i>
+                        </p>
+                        <p ng-if="idopont.status!='Elutasítva'">
+                          <i class="bi bi-trash-fill regret-trash" ng-click="removeApp(idopont.ID)" title="Visszavonás"></i>
+                        </p>
+                      </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                
+
+            </div>
+        </section>
+          
